@@ -7,9 +7,9 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
-	"github.com/layemut/todo-api/app/handler"
-	"github.com/layemut/todo-api/app/model"
-	"github.com/layemut/todo-api/config"
+	"github.com/layemut/todo-application/todo-api/app/handler"
+	"github.com/layemut/todo-application/todo-api/app/model"
+	"github.com/layemut/todo-application/todo-api/config"
 )
 
 // App has router and db instances

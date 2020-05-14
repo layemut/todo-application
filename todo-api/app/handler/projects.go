@@ -6,16 +6,27 @@ import (
 
 	"github.com/gorilla/mux"
 	"github.com/jinzhu/gorm"
-	"github.com/layemut/todo-api/app/model"
+	"github.com/layemut/todo-application/todo-api/app/model"
 )
 
 func GetAllProjects(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
-	projects := []model.Project{}
+	projectsResponse := model.ProjectsResponse{}
+	projects := []*model.Project{}
 	db.Find(&projects)
-	respondJSON(w, http.StatusOK, projects)
+
+	projectsResponse.Projects = projects
+
+	if len(projects) == 0 {
+		projectsResponse.Response = model.PrepareResponse(400, "No Project Found.", nil)
+		respondJSON(w, http.StatusOK, projectsResponse)
+		return
+	}
+	projectsResponse.Response = model.SuccessResponse()
+	respondJSON(w, http.StatusOK, projectsResponse)
 }
 
 func CreateProject(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
+	projectsResponse := model.ProjectsResponse{}
 	project := model.Project{}
 
 	decoder := json.NewDecoder(r.Body)
@@ -26,13 +37,19 @@ func CreateProject(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 	defer r.Body.Close()
 
 	if err := db.Save(&project).Error; err != nil {
-		respondError(w, http.StatusInternalServerError, err.Error())
+		respondJSON(w, http.StatusInternalServerError, model.PrepareResponse(500, "Error saving project", err))
 		return
 	}
+
+	projects := []*model.Project{}
+	projects = append(projects, &project)
+	projectsResponse.Projects = projects
+	projectsResponse.Response = model.SuccessResponse()
 	respondJSON(w, http.StatusCreated, project)
 }
 
 func GetProject(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
+	projectsResponse := model.ProjectsResponse{}
 	vars := mux.Vars(r)
 
 	title := vars["title"]
@@ -40,7 +57,10 @@ func GetProject(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 	if project == nil {
 		return
 	}
-	respondJSON(w, http.StatusOK, project)
+	projects := []*model.Project{project}
+	projectsResponse.Projects = projects
+	projectsResponse.Response = model.SuccessResponse()
+	respondJSON(w, http.StatusOK, projectsResponse)
 }
 
 func UpdateProject(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
@@ -115,9 +135,11 @@ func RestoreProject(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 
 // getProjectOr404 gets a project instance if exists, or respond the 404 error otherwise
 func getProjectOr404(db *gorm.DB, title string, w http.ResponseWriter, r *http.Request) *model.Project {
+	projectsResponse := model.ProjectsResponse{}
 	project := model.Project{}
 	if err := db.First(&project, model.Project{Title: title}).Error; err != nil {
-		respondError(w, http.StatusNotFound, err.Error())
+		projectsResponse.Response = model.PrepareResponse(404, title+" not found.", err)
+		respondJSON(w, http.StatusOK, projectsResponse)
 		return nil
 	}
 	return &project

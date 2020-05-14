@@ -1,4 +1,4 @@
-module github.com/layemut/todo-api
+module github.com/layemut/todo-application/todo-api
 
 go 1.14
 
