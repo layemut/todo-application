@@ -7,7 +7,7 @@ type Status struct {
 
 type BaseResponse struct {
 	Status Status `json:"status"`
-	Error  error  `json:"error"`
+	Error  string `json:"error"`
 }
 
 type ProjectsResponse struct {
@@ -15,7 +15,12 @@ type ProjectsResponse struct {
 	Projects []*Project   `json:"projects"`
 }
 
-func PrepareResponse(code int, description string, err error) BaseResponse {
+type TasksResponse struct {
+	Response BaseResponse `json:"response"`
+	Tasks    []*Task      `json:"tasks"`
+}
+
+func PrepareResponse(code int, description string, err string) BaseResponse {
 	baseResponse := BaseResponse{}
 	baseResponse.Error = err
 	baseResponse.Status.Code = code
@@ -24,5 +29,9 @@ func PrepareResponse(code int, description string, err error) BaseResponse {
 }
 
 func SuccessResponse() BaseResponse {
-	return PrepareResponse(200, "Success", nil)
+	return PrepareResponse(200, "Success", "")
+}
+
+func BadRequestResponse(err error) BaseResponse {
+	return PrepareResponse(400, "Bad Request", err.Error())
 }

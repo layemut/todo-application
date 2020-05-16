@@ -5,33 +5,39 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/gorilla/mux"
 	"github.com/jinzhu/gorm"
 	"github.com/layemut/todo-application/todo-api/app/model"
+	"github.com/layemut/todo-application/todo-api/app/util"
 )
 
 func GetAllTasks(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
-	vars := mux.Vars(r)
+	tasksResponse := model.TasksResponse{}
 
-	projectTitle := vars["title"]
-	project := getProjectOr404(db, projectTitle, w, r)
+	title := util.GetParam(r, "title")
+
+	project := getProjectOr404(db, title, w, r)
 	if project == nil {
 		return
 	}
 
-	tasks := []model.Task{}
+	tasks := []*model.Task{}
 	if err := db.Model(&project).Related(&tasks).Error; err != nil {
-		respondError(w, http.StatusInternalServerError, err.Error())
+		tasksResponse.Response = model.PrepareResponse(500, "Error getting tasks", err.Error())
+		respondJSON(w, http.StatusInternalServerError, tasksResponse)
 		return
 	}
-	respondJSON(w, http.StatusOK, tasks)
+
+	tasksResponse.Response = model.SuccessResponse()
+	tasksResponse.Tasks = tasks
+	respondJSON(w, http.StatusOK, tasksResponse)
 }
 
 func CreateTask(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
-	vars := mux.Vars(r)
+	tasksResponse := model.TasksResponse{}
 
-	projectTitle := vars["title"]
-	project := getProjectOr404(db, projectTitle, w, r)
+	title := util.GetParam(r, "title")
+
+	project := getProjectOr404(db, title, w, r)
 	if project == nil {
 		return
 	}
@@ -40,45 +46,55 @@ func CreateTask(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 
 	decoder := json.NewDecoder(r.Body)
 	if err := decoder.Decode(&task); err != nil {
-		respondError(w, http.StatusBadRequest, err.Error())
+		tasksResponse.Response = model.BadRequestResponse(err)
+		respondJSON(w, http.StatusBadRequest, tasksResponse)
 		return
 	}
 	defer r.Body.Close()
 
 	if err := db.Save(&task).Error; err != nil {
-		respondError(w, http.StatusInternalServerError, err.Error())
+		tasksResponse.Response = model.PrepareResponse(500, "Error creating taks", err.Error())
+		respondJSON(w, http.StatusInternalServerError, tasksResponse)
 		return
 	}
-	respondJSON(w, http.StatusCreated, task)
+
+	tasks := []*model.Task{}
+	tasks = append(tasks, &task)
+	tasksResponse.Response = model.SuccessResponse()
+	tasksResponse.Tasks = tasks
+	respondJSON(w, http.StatusCreated, tasksResponse)
 }
 
 func GetTask(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
-	vars := mux.Vars(r)
+	tasksResponse := model.TasksResponse{}
 
-	projectTitle := vars["title"]
-	project := getProjectOr404(db, projectTitle, w, r)
+	title := util.GetParam(r, "title")
+	project := getProjectOr404(db, title, w, r)
 	if project == nil {
 		return
 	}
 
-	id, _ := strconv.Atoi(vars["id"])
+	id, _ := strconv.Atoi(util.GetParam(r, "id"))
 	task := getTaskOr404(db, id, w, r)
 	if task == nil {
 		return
 	}
-	respondJSON(w, http.StatusOK, task)
+
+	tasksResponse.Response = model.SuccessResponse()
+	tasksResponse.Tasks = []*model.Task{task}
+	respondJSON(w, http.StatusOK, tasksResponse)
 }
 
 func UpdateTask(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
-	vars := mux.Vars(r)
+	tasksResponse := model.TasksResponse{}
 
-	projectTitle := vars["title"]
-	project := getProjectOr404(db, projectTitle, w, r)
+	title := util.GetParam(r, "title")
+	project := getProjectOr404(db, title, w, r)
 	if project == nil {
 		return
 	}
 
-	id, _ := strconv.Atoi(vars["id"])
+	id, _ := strconv.Atoi(util.GetParam(r, "id"))
 	task := getTaskOr404(db, id, w, r)
 	if task == nil {
 		return
@@ -86,50 +102,54 @@ func UpdateTask(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 
 	decoder := json.NewDecoder(r.Body)
 	if err := decoder.Decode(&task); err != nil {
-		respondError(w, http.StatusBadRequest, err.Error())
+		tasksResponse.Response = model.BadRequestResponse(err)
+		respondJSON(w, http.StatusBadRequest, tasksResponse)
 		return
 	}
 	defer r.Body.Close()
 
 	if err := db.Save(&task).Error; err != nil {
-		respondError(w, http.StatusInternalServerError, err.Error())
+		tasksResponse.Response = model.PrepareResponse(500, "Error updating task", err.Error())
+		respondJSON(w, http.StatusInternalServerError, tasksResponse)
 		return
 	}
 	respondJSON(w, http.StatusOK, task)
 }
 
 func DeleteTask(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
-	vars := mux.Vars(r)
+	tasksResponse := model.TasksResponse{}
 
-	projectTitle := vars["title"]
-	project := getProjectOr404(db, projectTitle, w, r)
+	title := util.GetParam(r, "title")
+	project := getProjectOr404(db, title, w, r)
 	if project == nil {
 		return
 	}
 
-	id, _ := strconv.Atoi(vars["id"])
+	id, _ := strconv.Atoi(util.GetParam(r, "id"))
 	task := getTaskOr404(db, id, w, r)
 	if task == nil {
 		return
 	}
 
 	if err := db.Delete(&project).Error; err != nil {
-		respondError(w, http.StatusInternalServerError, err.Error())
+		tasksResponse.Response = model.PrepareResponse(500, "Error deleting task", err.Error())
+		respondJSON(w, http.StatusInternalServerError, tasksResponse)
 		return
 	}
-	respondJSON(w, http.StatusNoContent, nil)
+	tasksResponse.Response = model.SuccessResponse()
+	respondJSON(w, http.StatusOK, tasksResponse)
 }
 
 func CompleteTask(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
-	vars := mux.Vars(r)
+	tasksResponse := model.TasksResponse{}
 
-	projectTitle := vars["title"]
-	project := getProjectOr404(db, projectTitle, w, r)
+	title := util.GetParam(r, "title")
+	project := getProjectOr404(db, title, w, r)
 	if project == nil {
 		return
 	}
 
-	id, _ := strconv.Atoi(vars["id"])
+	id, _ := strconv.Atoi(util.GetParam(r, "id"))
 	task := getTaskOr404(db, id, w, r)
 	if task == nil {
 		return
@@ -137,22 +157,24 @@ func CompleteTask(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 
 	task.Complete()
 	if err := db.Save(&task).Error; err != nil {
-		respondError(w, http.StatusInternalServerError, err.Error())
+		tasksResponse.Response = model.PrepareResponse(500, "Error completing task", err.Error())
+		respondJSON(w, http.StatusInternalServerError, tasksResponse)
 		return
 	}
-	respondJSON(w, http.StatusOK, task)
+	tasksResponse.Response = model.SuccessResponse()
+	respondJSON(w, http.StatusOK, tasksResponse)
 }
 
 func UndoTask(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
-	vars := mux.Vars(r)
+	tasksResponse := model.TasksResponse{}
 
-	projectTitle := vars["title"]
-	project := getProjectOr404(db, projectTitle, w, r)
+	title := util.GetParam(r, "title")
+	project := getProjectOr404(db, title, w, r)
 	if project == nil {
 		return
 	}
 
-	id, _ := strconv.Atoi(vars["id"])
+	id, _ := strconv.Atoi(util.GetParam(r, "id"))
 	task := getTaskOr404(db, id, w, r)
 	if task == nil {
 		return
@@ -160,17 +182,22 @@ func UndoTask(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 
 	task.Undo()
 	if err := db.Save(&task).Error; err != nil {
-		respondError(w, http.StatusInternalServerError, err.Error())
+		tasksResponse.Response = model.PrepareResponse(500, "Error undoing task", err.Error())
+		respondJSON(w, http.StatusInternalServerError, tasksResponse)
 		return
 	}
-	respondJSON(w, http.StatusOK, task)
+
+	tasksResponse.Response = model.SuccessResponse()
+	respondJSON(w, http.StatusOK, tasksResponse)
 }
 
 // getTaskOr404 gets a task instance if exists, or respond the 404 error otherwise
 func getTaskOr404(db *gorm.DB, id int, w http.ResponseWriter, r *http.Request) *model.Task {
+	tasksResponse := model.TasksResponse{}
 	task := model.Task{}
 	if err := db.First(&task, id).Error; err != nil {
-		respondError(w, http.StatusNotFound, err.Error())
+		tasksResponse.Response = model.PrepareResponse(404, "Task not found", err.Error())
+		respondJSON(w, http.StatusNotFound, tasksResponse)
 		return nil
 	}
 	return &task

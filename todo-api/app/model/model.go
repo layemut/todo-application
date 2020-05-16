@@ -11,7 +11,7 @@ type Project struct {
 	gorm.Model
 	Title    string `gorm:"unique" json:"title"`
 	Archived bool   `json:"archived"`
-	Tasks    []Task `gorm:"foreignkey:ID" json:"tasks"`
+	Tasks    []Task `gorm:"foreignkey:ProjectID" json:"tasks"`
 }
 
 func (p *Project) Archive() {
