@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="1e4a25a5-728a-4acc-89a7-1ae040ed3e49" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/app/app.go" beforeDir="false" afterPath="$PROJECT_DIR$/app/app.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/controller/projects.go" beforeDir="false" afterPath="$PROJECT_DIR$/app/controller/projects.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/controller/tasks.go" beforeDir="false" afterPath="$PROJECT_DIR$/app/controller/tasks.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/model/models.go" beforeDir="false" afterPath="$PROJECT_DIR$/app/model/models.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/repo/projectrepository.go" beforeDir="false" afterPath="$PROJECT_DIR$/app/repo/projectrepository.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/repo/taskrepository.go" beforeDir="false" afterPath="$PROJECT_DIR$/app/repo/taskrepository.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Go File" />
+      </list>
+    </option>
+  </component>
+  <component name="GOROOT" path="/usr/local/go" />
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="GoLibraries">
+    <option name="indexEntireGoPath" value="false" />
+  </component>
+  <component name="ProjectId" id="1c6Nuf2z9FC7yNAnNMYYVbSN4cy" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="1" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="DefaultGoTemplateProperty" value="Go File" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="go.import.settings.migrated" value="true" />
+    <property name="go.sdk.automatically.set" value="true" />
+    <property name="go.tried.to.enable.integration.vgo.integrator" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="restartRequiresConfirmation" value="false" />
+    <property name="settings.editor.selected.configurable" value="com.maddyhome.idea.vim.ui.VimEmulationConfigurable" />
+  </component>
+  <component name="RestClientSettings">
+    <option name="REQUEST_HISTORY">
+      <list>
+        <RestClientRequest>
+          <option name="httpMethod" value="GET" />
+          <option name="urlBase" value="http://localhost:8080/projects" />
+          <option name="urlPath" value="" />
+          <option name="headers">
+            <list>
+              <KeyValuePair>
+                <option name="key" value="Accept" />
+                <option name="value" value="*/*" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="Cache-Control" />
+                <option name="value" value="no-cache" />
+              </KeyValuePair>
+            </list>
+          </option>
+          <option name="textToSend" value="" />
+          <option name="filesToSend" value="" />
+        </RestClientRequest>
+        <RestClientRequest>
+          <option name="httpMethod" value="POST" />
+          <option name="urlBase" value="http://localhost:8080/projects" />
+          <option name="urlPath" value="" />
+          <option name="headers">
+            <list>
+              <KeyValuePair>
+                <option name="key" value="Content-Type" />
+                <option name="value" value="application/json" />
+              </KeyValuePair>
+            </list>
+          </option>
+          <option name="haveTextToSend" value="true" />
+          <option name="textToSend" value="{&#10;  &quot;title&quot;: &quot;todo-application&quot;&#10;}" />
+          <option name="filesToSend" value="" />
+        </RestClientRequest>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager" selected="Go Build.go build github.com/layemut/todo-application/todo-api">
+    <configuration name="go build github.com/layemut/todo-application/todo-api" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
+      <module name="todo-api" />
+      <working_directory value="$PROJECT_DIR$" />
+      <kind value="PACKAGE" />
+      <filePath value="$PROJECT_DIR$/main.go" />
+      <package value="github.com/layemut/todo-application/todo-api" />
+      <directory value="$PROJECT_DIR$/" />
+      <method v="2" />
+    </configuration>
+    <configuration name="rest-api#1" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" path="$APPLICATION_CONFIG_DIR$/scratches/rest-api.http" runType="Run single request">
+      <method v="2" />
+    </configuration>
+    <configuration name="rest-api#2" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" path="$APPLICATION_CONFIG_DIR$/scratches/rest-api.http" index="2" runType="Run single request">
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Go Build.go build github.com/layemut/todo-application/todo-api" />
+        <item itemvalue="HTTP Request.rest-api#2" />
+        <item itemvalue="HTTP Request.rest-api#1" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="1e4a25a5-728a-4acc-89a7-1ae040ed3e49" name="Default Changelist" comment="" />
+      <created>1589845306972</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1589845306972</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="2" />
+  </component>
+  <component name="VgoProject">
+    <integration-enabled>true</integration-enabled>
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="755" y="390" width="400" height="334" key="#Go_Modules" timestamp="1589845317736">
+      <screen x="0" y="27" width="1920" height="1053" />
+    </state>
+    <state x="755" y="390" width="400" height="334" key="#Go_Modules/0.27.1920.1053@0.27.1920.1053" timestamp="1589845317736" />
+    <state x="862" y="419" width="196" height="275" key="#Vim_Emulation" timestamp="1589886748006">
+      <screen x="0" y="27" width="1920" height="1053" />
+    </state>
+    <state x="862" y="419" width="196" height="275" key="#Vim_Emulation/0.27.1920.1053@0.27.1920.1053" timestamp="1589886748006" />
+    <state x="100" y="127" width="1720" height="853" key="DiffContextDialog" timestamp="1589887042244">
+      <screen x="0" y="27" width="1920" height="1053" />
+    </state>
+    <state x="100" y="127" width="1720" height="853" key="DiffContextDialog/0.27.1920.1053@0.27.1920.1053" timestamp="1589887042244" />
+    <state width="1878" height="493" key="GridCell.Tab.0.bottom" timestamp="1590049826620">
+      <screen x="0" y="27" width="1920" height="1053" />
+    </state>
+    <state width="1878" height="493" key="GridCell.Tab.0.bottom/0.27.1920.1053@0.27.1920.1053" timestamp="1590049826620" />
+    <state width="1878" height="493" key="GridCell.Tab.0.center" timestamp="1590049826620">
+      <screen x="0" y="27" width="1920" height="1053" />
+    </state>
+    <state width="1878" height="493" key="GridCell.Tab.0.center/0.27.1920.1053@0.27.1920.1053" timestamp="1590049826620" />
+    <state width="1878" height="493" key="GridCell.Tab.0.left" timestamp="1590049826619">
+      <screen x="0" y="27" width="1920" height="1053" />
+    </state>
+    <state width="1878" height="493" key="GridCell.Tab.0.left/0.27.1920.1053@0.27.1920.1053" timestamp="1590049826619" />
+    <state width="1878" height="493" key="GridCell.Tab.0.right" timestamp="1590049826620">
+      <screen x="0" y="27" width="1920" height="1053" />
+    </state>
+    <state width="1878" height="493" key="GridCell.Tab.0.right/0.27.1920.1053@0.27.1920.1053" timestamp="1590049826620" />
+    <state width="1878" height="342" key="GridCell.Tab.1.bottom" timestamp="1590048682196">
+      <screen x="0" y="27" width="1920" height="1053" />
+    </state>
+    <state width="1878" height="342" key="GridCell.Tab.1.bottom/0.27.1920.1053@0.27.1920.1053" timestamp="1590048682196" />
+    <state width="1878" height="342" key="GridCell.Tab.1.center" timestamp="1590048682195">
+      <screen x="0" y="27" width="1920" height="1053" />
+    </state>
+    <state width="1878" height="342" key="GridCell.Tab.1.center/0.27.1920.1053@0.27.1920.1053" timestamp="1590048682195" />
+    <state width="1878" height="342" key="GridCell.Tab.1.left" timestamp="1590048682195">
+      <screen x="0" y="27" width="1920" height="1053" />
+    </state>
+    <state width="1878" height="342" key="GridCell.Tab.1.left/0.27.1920.1053@0.27.1920.1053" timestamp="1590048682195" />
+    <state width="1878" height="342" key="GridCell.Tab.1.right" timestamp="1590048682196">
+      <screen x="0" y="27" width="1920" height="1053" />
+    </state>
+    <state width="1878" height="342" key="GridCell.Tab.1.right/0.27.1920.1053@0.27.1920.1053" timestamp="1590048682196" />
+    <state width="256" height="477" key="HiddenNamespacesPopup" timestamp="1590049696944">
+      <screen x="0" y="27" width="1920" height="1053" />
+    </state>
+    <state width="256" height="477" key="HiddenNamespacesPopup/0.27.1920.1053@0.27.1920.1053" timestamp="1590049696944" />
+    <state x="449" y="188" width="1022" height="737" key="SettingsEditor" timestamp="1589886759648">
+      <screen x="0" y="27" width="1920" height="1053" />
+    </state>
+    <state x="449" y="188" width="1022" height="737" key="SettingsEditor/0.27.1920.1053@0.27.1920.1053" timestamp="1589886759648" />
+    <state x="623" y="259" width="672" height="678" key="search.everywhere.popup" timestamp="1589996164955">
+      <screen x="0" y="27" width="1920" height="1053" />
+    </state>
+    <state x="623" y="259" width="672" height="678" key="search.everywhere.popup/0.27.1920.1053@0.27.1920.1053" timestamp="1589996164955" />
+  </component>
+</project>

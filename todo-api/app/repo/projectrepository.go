@@ -34,7 +34,7 @@ func (pri *ProjectRepositoryImpl) FindAll() ([]*model.Project, error) {
 }
 
 func (pri *ProjectRepositoryImpl) FindByTitle(title string) (*model.Project, error) {
-	var project *model.Project
+	project := new(model.Project)
 
 	if err := pri.DB.Find(&project, model.Project{Title: title}).Related(&project.Tasks).Error; err != nil {
 		return nil, err

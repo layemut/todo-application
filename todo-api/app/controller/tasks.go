@@ -61,6 +61,12 @@ func (tc TaskController) CreateTask(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	if err := tc.TaskRepository.Create(&task); err != nil {
+		tasksResponse.Response = model.PrepareResponse(500, "Error creating task", err.Error())
+		RespondJSON(w, http.StatusInternalServerError, tasksResponse)
+		return
+	}
+
 	tasksResponse.Tasks = []*model.Task{&task}
 	tasksResponse.Response = model.SuccessResponse()
 	RespondJSON(w, http.StatusCreated, tasksResponse)

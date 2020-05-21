@@ -18,13 +18,11 @@ type TaskRepositoryImpl struct {
 }
 
 func (tri *TaskRepositoryImpl) FindAll(project *model.Project) ([]*model.Task, error) {
-	var tasks []*model.Task
-
-	if err := tri.DB.Model(project).Related(tasks).Error; err != nil {
+	if err := tri.DB.Model(project).Related(&project.Tasks).Error; err != nil {
 		return nil, err
 	}
 
-	return tasks, nil
+	return project.Tasks, nil
 }
 
 func (tri *TaskRepositoryImpl) FindByID(project *model.Project, ID int) (*model.Task, error) {

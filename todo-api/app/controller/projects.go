@@ -20,7 +20,7 @@ func (pc ProjectController) GetAllProjects(w http.ResponseWriter, r *http.Reques
 	projects, err := pc.ProjectRepository.FindAll()
 
 	if len(projects) == 0 || err != nil {
-		projectsResponse.Response = model.PrepareResponse(400, "No Project Found.", err.Error())
+		projectsResponse.Response = model.PrepareResponse(400, "No Project Found.", "")
 		RespondJSON(w, http.StatusOK, projectsResponse)
 		return
 	}

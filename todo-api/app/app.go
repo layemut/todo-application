@@ -30,6 +30,7 @@ func (a *App) Initialize(config *config.Config) {
 
 	a.DB = model.DBMigrate(db)
 	a.ProjectController = controller.ProjectController{ProjectRepository: &repo.ProjectRepositoryImpl{DB: db}}
+	a.TaskController = controller.TaskController{ProjectRepository: &repo.ProjectRepositoryImpl{DB: db}, TaskRepository: &repo.TaskRepositoryImpl{DB: db}}
 	a.Router = mux.NewRouter()
 	a.setRouters()
 }
