@@ -1,6 +1,9 @@
 package model
 
 import (
+	"encoding/json"
+	"github.com/layemut/todo-application/todo-api/app/controller"
+	"net/http"
 	"time"
 
 	"github.com/jinzhu/gorm"
@@ -14,12 +17,14 @@ type Project struct {
 	Tasks    []Task `gorm:"foreignkey:ProjectID" json:"tasks"`
 }
 
-func (p *Project) Archive() {
-	p.Archived = true
-}
-
-func (p *Project) Restore() {
-	p.Archived = false
+func (p *Project) Parse(w http.ResponseWriter, r *http.Request) error {
+	decoder := json.NewDecoder(r.Body)
+	if err := decoder.Decode(&p); err != nil {
+		controller.RespondJSON(w, http.StatusBadRequest, BadRequestResponse(err))
+		return err
+	}
+	defer r.Body.Close()
+	return nil
 }
 
 type Task struct {
@@ -31,12 +36,14 @@ type Task struct {
 	ProjectID uint       `json:"project_id"`
 }
 
-func (t *Task) Complete() {
-	t.Done = true
-}
-
-func (t *Task) Undo() {
-	t.Done = false
+func (t *Task) Parse(w http.ResponseWriter, r *http.Request) error {
+	decoder := json.NewDecoder(r.Body)
+	if err := decoder.Decode(&t); err != nil {
+		controller.RespondJSON(w, http.StatusBadRequest, BadRequestResponse(err))
+		return err
+	}
+	defer r.Body.Close()
+	return nil
 }
 
 // DBMigrate will create and migrate the tables, and then make the some relationships if necessary

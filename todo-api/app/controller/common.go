@@ -1,12 +1,12 @@
-package handler
+package controller
 
 import (
 	"encoding/json"
 	"net/http"
 )
 
-// respondJSON makes the response with payload as json format
-func respondJSON(w http.ResponseWriter, status int, payload interface{}) {
+// RespondJSON makes the response with payload as json format
+func RespondJSON(w http.ResponseWriter, status int, payload interface{}) {
 	response, err := json.Marshal(payload)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
