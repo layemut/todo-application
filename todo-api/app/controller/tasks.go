@@ -5,16 +5,17 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/jinzhu/gorm"
 	"github.com/layemut/todo-application/todo-api/app/model"
 	"github.com/layemut/todo-application/todo-api/app/util"
 )
 
+// TaskController controller for project and task repo
 type TaskController struct {
 	ProjectRepository repo.ProjectRepository
 	TaskRepository    repo.TaskRepository
 }
 
+// GetAllTasks gets all tasks
 func (tc TaskController) GetAllTasks(w http.ResponseWriter, r *http.Request) {
 	tasksResponse := model.TasksResponse{}
 
@@ -39,6 +40,7 @@ func (tc TaskController) GetAllTasks(w http.ResponseWriter, r *http.Request) {
 	RespondJSON(w, http.StatusOK, tasksResponse)
 }
 
+// CreateTask creates task with request
 func (tc TaskController) CreateTask(w http.ResponseWriter, r *http.Request) {
 	tasksResponse := model.TasksResponse{}
 
@@ -53,7 +55,7 @@ func (tc TaskController) CreateTask(w http.ResponseWriter, r *http.Request) {
 
 	task := model.Task{ProjectID: project.ID}
 
-	if err := task.Parse(w, r); err != nil {
+	if err := task.Parse(r); err != nil {
 		tasksResponse.Response = model.BadRequestResponse(err)
 		RespondJSON(w, http.StatusBadRequest, tasksResponse)
 		return
@@ -64,6 +66,7 @@ func (tc TaskController) CreateTask(w http.ResponseWriter, r *http.Request) {
 	RespondJSON(w, http.StatusCreated, tasksResponse)
 }
 
+// GetTask gets task with given id
 func (tc TaskController) GetTask(w http.ResponseWriter, r *http.Request) {
 	tasksResponse := model.TasksResponse{}
 
@@ -90,6 +93,7 @@ func (tc TaskController) GetTask(w http.ResponseWriter, r *http.Request) {
 	RespondJSON(w, http.StatusOK, tasksResponse)
 }
 
+// UpdateTask update task with request
 func (tc TaskController) UpdateTask(w http.ResponseWriter, r *http.Request) {
 	tasksResponse := model.TasksResponse{}
 
@@ -111,7 +115,7 @@ func (tc TaskController) UpdateTask(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if err := task.Parse(w, r); err != nil {
+	if err := task.Parse(r); err != nil {
 		tasksResponse.Response = model.BadRequestResponse(err)
 		RespondJSON(w, http.StatusBadRequest, tasksResponse)
 		return
@@ -126,6 +130,7 @@ func (tc TaskController) UpdateTask(w http.ResponseWriter, r *http.Request) {
 	RespondJSON(w, http.StatusOK, task)
 }
 
+// DeleteTask deletes task with id
 func (tc TaskController) DeleteTask(w http.ResponseWriter, r *http.Request) {
 	tasksResponse := model.TasksResponse{}
 
@@ -147,23 +152,13 @@ func (tc TaskController) DeleteTask(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if err := db.Delete(&project).Error; err != nil {
+	err = tc.TaskRepository.Update(task)
+	if err != nil {
 		tasksResponse.Response = model.PrepareResponse(500, "Error deleting task", err.Error())
 		RespondJSON(w, http.StatusInternalServerError, tasksResponse)
 		return
 	}
+
 	tasksResponse.Response = model.SuccessResponse()
 	RespondJSON(w, http.StatusOK, tasksResponse)
-}
-
-// getTaskOr404 gets a task instance if exists, or respond the 404 error otherwise
-func (tc TaskController) getTaskOr404(db *gorm.DB, id int, w http.ResponseWriter, r *http.Request) *model.Task {
-	tasksResponse := model.TasksResponse{}
-	task := model.Task{}
-	if err := db.First(&task, id).Error; err != nil {
-		tasksResponse.Response = model.PrepareResponse(404, "Task not found", err.Error())
-		RespondJSON(w, http.StatusNotFound, tasksResponse)
-		return nil
-	}
-	return &task
 }

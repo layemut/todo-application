@@ -45,10 +45,10 @@ func (a *App) setRouters() {
 
 	// Routing for handling the tasks
 	a.Get("/projects/{title}/tasks", a.TaskController.GetAllTasks)
-	a.Post("/projects/{title}/tasks", a.handleRequest(controller.CreateTask))
-	a.Get("/projects/{title}/tasks/{id:[0-9]+}", a.handleRequest(controller.GetTask))
-	a.Put("/projects/{title}/tasks/{id:[0-9]+}", a.handleRequest(controller.UpdateTask))
-	a.Delete("/projects/{title}/tasks/{id:[0-9]+}", a.handleRequest(controller.DeleteTask))
+	a.Post("/projects/{title}/tasks", a.TaskController.CreateTask)
+	a.Get("/projects/{title}/tasks/{id:[0-9]+}", a.TaskController.GetTask)
+	a.Put("/projects/{title}/tasks/{id:[0-9]+}", a.TaskController.UpdateTask)
+	a.Delete("/projects/{title}/tasks/{id:[0-9]+}", a.TaskController.DeleteTask)
 }
 
 // Get wraps the router for GET method
@@ -74,12 +74,4 @@ func (a *App) Delete(path string, f func(w http.ResponseWriter, r *http.Request)
 // Run the app on it's router
 func (a *App) Run(host string) {
 	log.Fatal(http.ListenAndServe(host, a.Router))
-}
-
-type RequestHandlerFunction func(db *gorm.DB, w http.ResponseWriter, r *http.Request)
-
-func (a *App) handleRequest(handler RequestHandlerFunction) http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		handler(a.DB, w, r)
-	}
 }

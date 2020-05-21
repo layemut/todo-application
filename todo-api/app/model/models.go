@@ -2,7 +2,6 @@ package model
 
 import (
 	"encoding/json"
-	"github.com/layemut/todo-application/todo-api/app/controller"
 	"net/http"
 	"time"
 
@@ -17,10 +16,9 @@ type Project struct {
 	Tasks    []Task `gorm:"foreignkey:ProjectID" json:"tasks"`
 }
 
-func (p *Project) Parse(w http.ResponseWriter, r *http.Request) error {
+func (p *Project) Parse(r *http.Request) error {
 	decoder := json.NewDecoder(r.Body)
 	if err := decoder.Decode(&p); err != nil {
-		controller.RespondJSON(w, http.StatusBadRequest, BadRequestResponse(err))
 		return err
 	}
 	defer r.Body.Close()
@@ -36,10 +34,9 @@ type Task struct {
 	ProjectID uint       `json:"project_id"`
 }
 
-func (t *Task) Parse(w http.ResponseWriter, r *http.Request) error {
+func (t *Task) Parse(r *http.Request) error {
 	decoder := json.NewDecoder(r.Body)
 	if err := decoder.Decode(&t); err != nil {
-		controller.RespondJSON(w, http.StatusBadRequest, BadRequestResponse(err))
 		return err
 	}
 	defer r.Body.Close()

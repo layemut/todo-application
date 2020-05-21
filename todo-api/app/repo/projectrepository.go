@@ -62,3 +62,4 @@ func (pri *ProjectRepositoryImpl) Delete(project *model.Project) error {
 
 	return nil
 }
+

@@ -1,17 +1,19 @@
 package controller
 
 import (
-	"github.com/layemut/todo-application/todo-api/app/repo"
 	"net/http"
 
 	"github.com/layemut/todo-application/todo-api/app/model"
+	"github.com/layemut/todo-application/todo-api/app/repo"
 	"github.com/layemut/todo-application/todo-api/app/util"
 )
 
+// ProjectController controller for project operations
 type ProjectController struct {
 	ProjectRepository repo.ProjectRepository
 }
 
+// GetAllProjects gets all projects
 func (pc ProjectController) GetAllProjects(w http.ResponseWriter, r *http.Request) {
 	projectsResponse := model.ProjectsResponse{}
 
@@ -28,11 +30,12 @@ func (pc ProjectController) GetAllProjects(w http.ResponseWriter, r *http.Reques
 	RespondJSON(w, http.StatusOK, projectsResponse)
 }
 
+// CreateProject creates project with request
 func (pc ProjectController) CreateProject(w http.ResponseWriter, r *http.Request) {
 	projectsResponse := model.ProjectsResponse{}
 	project := model.Project{}
 
-	if err := project.Parse(w, r); err != nil {
+	if err := project.Parse(r); err != nil {
 		projectsResponse.Response = model.BadRequestResponse(err)
 		RespondJSON(w, http.StatusBadRequest, projectsResponse)
 		return
@@ -51,6 +54,7 @@ func (pc ProjectController) CreateProject(w http.ResponseWriter, r *http.Request
 	RespondJSON(w, http.StatusCreated, projectsResponse)
 }
 
+// GetProject gets project by title
 func (pc ProjectController) GetProject(w http.ResponseWriter, r *http.Request) {
 	projectsResponse := model.ProjectsResponse{}
 
@@ -68,6 +72,7 @@ func (pc ProjectController) GetProject(w http.ResponseWriter, r *http.Request) {
 	RespondJSON(w, http.StatusOK, projectsResponse)
 }
 
+// UpdateProject updates project with request
 func (pc ProjectController) UpdateProject(w http.ResponseWriter, r *http.Request) {
 	projectsResponse := model.ProjectsResponse{}
 
@@ -80,7 +85,7 @@ func (pc ProjectController) UpdateProject(w http.ResponseWriter, r *http.Request
 		return
 	}
 
-	if err := project.Parse(w, r); err != nil {
+	if err := project.Parse(r); err != nil {
 		projectsResponse.Response = model.BadRequestResponse(err)
 		RespondJSON(w, http.StatusBadRequest, projectsResponse)
 		return
@@ -97,6 +102,7 @@ func (pc ProjectController) UpdateProject(w http.ResponseWriter, r *http.Request
 	RespondJSON(w, http.StatusOK, projectsResponse)
 }
 
+// DeleteProject delete project by title
 func (pc ProjectController) DeleteProject(w http.ResponseWriter, r *http.Request) {
 	projectsResponse := model.ProjectsResponse{}
 

@@ -3,16 +3,14 @@ package repo
 import (
 	"github.com/jinzhu/gorm"
 	"github.com/layemut/todo-application/todo-api/app/model"
-	"net/http"
-	"strconv"
 )
 
 type TaskRepository interface {
 	FindAll(project *model.Project) ([]*model.Task, error)
 	FindByID(project *model.Project, ID int) (*model.Task, error)
-	Create(ID int) error
-	Update(ID int) error
-	Delete(ID int) error
+	Create(task *model.Task) error
+	Update(task *model.Task) error
+	Delete(task *model.Task) error
 }
 
 type TaskRepositoryImpl struct {
@@ -40,12 +38,6 @@ func (tri *TaskRepositoryImpl) FindByID(project *model.Project, ID int) (*model.
 }
 
 func (tri *TaskRepositoryImpl) Create(task *model.Task) error {
-	task, err := tc.TaskRepository.FindByID(project, id)
-	if err != nil {
-		tasksResponse.Response = model.PrepareResponse(404, "task with id: "+strconv.Itoa(id)+" not found", err.Error())
-		RespondJSON(w, http.StatusOK, tasksResponse)
-		return
-	}
 	if err := tri.DB.Save(task).Error; err != nil {
 		return err
 	}
@@ -57,5 +49,12 @@ func (tri *TaskRepositoryImpl) Delete(task *model.Task) error {
 		return err
 	}
 
+	return nil
+}
+
+func (tri *TaskRepositoryImpl) Update(task *model.Task) error {
+	if err := tri.DB.Save(task).Error; err != nil {
+		return err
+	}
 	return nil
 }
